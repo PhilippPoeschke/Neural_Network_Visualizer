@@ -1,56 +1,78 @@
+#!/usr/bin/python3
+
 from PIL import Image, ImageDraw, ImageFont
 
-# FONT
-font_family = "Courier_Prime.ttf"
-font_size = 20
-font = ImageFont.truetype(font_family, font_size)
+class Neural_Net():
 
-# IMAGE SIZE
-rectangle = Image.new("RGB", (600, 100), color="white")
-draw = ImageDraw.Draw(rectangle)
-width, height = rectangle.size
+    def __init__(self, name):
+        self.name = name
+    
+    def initialize(self, x=600, y=100):
+        # IMAGE SIZE
+        self.rectangle = Image.new("RGB", (600, 100), color="white")
+        self.draw = ImageDraw.Draw(self.rectangle)
+        self.width, self.height = self.rectangle.size
 
-# width parts
-width_half = width*0.5
-width_three_quater = width*0.75
-width_full = width
+        # width parts
+        self.width_half = self.width*0.5
+        self.width_three_quater = self.width*0.75
+        self.width_full = self.width
 
-# height parts
-height_quater = height*0.25
-height_half = height*0.5
-height_three_quater = height*0.75
-height_full = height
+        # height parts
+        self.height_quater = self.height*0.25
+        self.height_half = self.height*0.5
+        self.height_three_quater = self.height*0.75
+        self.height_full = self.height
 
-# text parts
-text_size_half = font_size*0.5
-border = 20
+        # border to rectangle
+        self.border = 20
 
-#  ------------------------------------
-# |             |rect_two   |rect_four |
-# |  rect_one   |-----------|----------|
-# |             |rect_three |rect_five |
-#  ------------------------------------
+    def set_font(self, font_size=20, font_family="Courier_Prime.ttf"):
+        # FONT
+        self.font_family = font_family
+        self.font_size = font_size
+        self.font = ImageFont.truetype(self.font_family, self.font_size)
 
-# create rectangles
-rect_one = draw.rectangle((0, 0, width_half, height-1), None, "black")
-rect_two = draw.rectangle((width_half, 0, width_three_quater, height_half), None, "black")
-rect_three = draw.rectangle((width_half, height_half, width_three_quater, height-1), None, "black")
-rect_four = draw.rectangle((width_three_quater, 0, width_full-1, height_half), None, "black")
-rect_five = draw.rectangle((width_three_quater, height_half, width_full-1, height_full-1), None, "black")
+        # text parts
+        self.text_size_half = self.font_size*0.5
+        
+    def add_block(self):
+        #  ------------------------------------
+        # |             |rect_two   |rect_four |
+        # |  rect_one   |-----------|----------|
+        # |             |rect_three |rect_five |
+        #  ------------------------------------
+        # create rectangles
+        rect_one = self.draw.rectangle((0, 0, self.width_half, self.height-1), None, "black")
+        rect_two = self.draw.rectangle((self.width_half, 0, self.width_three_quater, self.height_half), None, "black")
+        rect_three = self.draw.rectangle((self.width_half, self.height_half, self.width_three_quater, self.height-1), None, "black")
+        rect_four = self.draw.rectangle((self.width_three_quater, 0, self.width_full-1, self.height_half), None, "black")
+        rect_five = self.draw.rectangle((self.width_three_quater, self.height_half, self.width_full-1, self.height_full-1), None, "black")
 
-#  ------------------------------------
-# |             |text_two   |text_four |
-# |  text_one   |-----------|----------|
-# |             |text_three |text_five |
-#  ------------------------------------
+    def add_text(self, block_name="dense_1", input_shape="(None)", output_shape="(None)"):
+        #  ------------------------------------
+        # |             |text_two   |text_four |
+        # |  text_one   |-----------|----------|
+        # |             |text_three |text_five |
+        #  ------------------------------------
+        # create text
+        text_one = self.draw.text((self.border, self.height_half-self.text_size_half), block_name, font=self.font, fill="black")
+        text_two = self.draw.text((self.border+self.width_half, self.height_quater-self.text_size_half), "input:", font=self.font, fill="black")
+        text_three = self.draw.text((self.border+self.width_half, self.height_three_quater-self.text_size_half), "output:", font=self.font, fill="black")
+        text_four = self.draw.text((self.border+self.width_three_quater, self.height_quater-self.text_size_half), input_shape, font=self.font, fill="black")
+        text_five = self.draw.text((self.border+self.width_three_quater, self.height_three_quater-self.text_size_half), output_shape, font=self.font, fill="black")
 
-# create text
-text_one = draw.text((border, height_half-text_size_half), "dense_1: Dense", font=font, fill="black")
-text_two = draw.text((border+width_half, height_quater-text_size_half), "input:", font=font, fill="black")
-text_three = draw.text((border+width_half, height_three_quater-text_size_half), "output:", font=font, fill="black")
-text_four = draw.text((border+width_three_quater, height_quater-text_size_half), "(None, 10)", font=font, fill="black")
-text_five = draw.text((border+width_three_quater,height_three_quater-text_size_half), "(None, 10)", font=font, fill="black")
+    def create(self):
+        # visualize
+        self.rectangle.show()
 
-# visualize
-rectangle.show()
-rectangle.save("basic_shape.png")
+    def save(self):
+        # save as png
+        self.rectangle.save("basic_shape.png")
+
+net = Neural_Net("layer_one")
+net.initialize()
+net.set_font()
+net.add_block()
+net.add_text()
+net.create()
