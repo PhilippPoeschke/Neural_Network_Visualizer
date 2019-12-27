@@ -2,14 +2,13 @@
 
 from PIL import Image, ImageDraw, ImageFont
 
-class Neural_Net():
+class node():
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, node_name="dense_1", input_nodes="2", output_nodes="2"):
         self.initialize()
         self.set_font()
         self.add_block()
-        self.add_text()
+        self.add_text(block_name=node_name ,input_shape=input_nodes, output_shape=output_nodes)
     
     def initialize(self, x=600, y=100):
         # IMAGE SIZE
@@ -74,5 +73,5 @@ class Neural_Net():
         # save as png
         self.rectangle.save("basic_shape.png")
 
-net = Neural_Net("layer_one")
+net = node(node_name="layer1", input_nodes="10", output_nodes="10")
 net.visualize()
