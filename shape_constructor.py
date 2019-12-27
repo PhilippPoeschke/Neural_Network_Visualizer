@@ -6,10 +6,14 @@ class Neural_Net():
 
     def __init__(self, name):
         self.name = name
+        self.initialize()
+        self.set_font()
+        self.add_block()
+        self.add_text()
     
     def initialize(self, x=600, y=100):
         # IMAGE SIZE
-        self.rectangle = Image.new("RGB", (600, 100), color="white")
+        self.rectangle = Image.new("RGB", (500, 100), color="white")
         self.draw = ImageDraw.Draw(self.rectangle)
         self.width, self.height = self.rectangle.size
 
@@ -62,7 +66,7 @@ class Neural_Net():
         text_four = self.draw.text((self.border+self.width_three_quater, self.height_quater-self.text_size_half), input_shape, font=self.font, fill="black")
         text_five = self.draw.text((self.border+self.width_three_quater, self.height_three_quater-self.text_size_half), output_shape, font=self.font, fill="black")
 
-    def create(self):
+    def visualize(self):
         # visualize
         self.rectangle.show()
 
@@ -71,8 +75,4 @@ class Neural_Net():
         self.rectangle.save("basic_shape.png")
 
 net = Neural_Net("layer_one")
-net.initialize()
-net.set_font()
-net.add_block()
-net.add_text()
-net.create()
+net.visualize()
