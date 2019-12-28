@@ -10,9 +10,9 @@ class node():
         self.add_block()
         self.add_text(block_name=node_name ,input_shape=input_nodes, output_shape=output_nodes)
     
-    def initialize(self, x=600, y=100):
+    def initialize(self, x=300, y=80):
         # IMAGE SIZE
-        self.rectangle = Image.new("RGB", (500, 100), color="white")
+        self.rectangle = Image.new("RGB", (300, 80), color="white")
         self.draw = ImageDraw.Draw(self.rectangle)
         self.width, self.height = self.rectangle.size
 
@@ -28,9 +28,9 @@ class node():
         self.height_full = self.height
 
         # border to rectangle
-        self.border = 20
+        self.border = 12
 
-    def set_font(self, font_size=20, font_family="Courier_Prime.ttf"):
+    def set_font(self, font_size=14, font_family="Courier_Prime.ttf"):
         # FONT
         self.font_family = font_family
         self.font_size = font_size
