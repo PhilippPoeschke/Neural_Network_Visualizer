@@ -27,8 +27,8 @@ Network.ps
 Network.show()
 '''
 im1 = Image.new("RGB", (1000, 200), color="white")
-im3 = Image.open('basic_shape.png')
-#im2 = node(node_name="layer1", input_nodes="10", output_nodes="10")
-
-im1.paste(im3)
+#im3 = Image.open('basic_shape.png')
+im2 = node(node_name="layer1", input_nodes="10", output_nodes="10")
+#im2.rectangle.show()
+im1.paste(im2.rectangle, (0,0))
 im1.show()

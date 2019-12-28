@@ -73,5 +73,5 @@ class node():
         # save as png
         self.rectangle.save("basic_shape.png")
 
-net = node(node_name="layer1", input_nodes="10", output_nodes="10")
-net.visualize()
+#net = node(node_name="layer1", input_nodes="10", output_nodes="10")
+#net.visualize()
