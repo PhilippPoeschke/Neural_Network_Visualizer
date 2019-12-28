@@ -17,20 +17,31 @@ from node import node
 class Network():
 
     def __init__(self):
-        self.image = Image.new("RGB", (1000, 200), color="white")
-
-    def add(self, im1, im2):
-        dst = Image.new('RGB', (min(im1.width, im2.width), im1.height + im2.height))
-        dst.paste(im1, (0, 0))
-        dst.paste(im2, (0, im1.height))
-        return dst
+        self.image = Image.new("RGB", (350, 120), color="white")
+        self.image_width, self.image_height = self.image.size
     
     def add_layer(self):
-        self.layer = Image.new("RGB", (1000, 200), color="white")
+        self.layer = Image.new("RGB", (self.image_width, self.image_height), color="white")
         dst = Image.new('RGB', (min(self.image.width, self.layer.width), self.image.height + self.layer.height))
         dst.paste(self.image, (0,0))
         dst.paste(self.layer, (0, self.image.height))
         self.image = dst
+
+    def add_node(self, layer, node):
+        width , height = self.image.size
+        pos_x = layer[0]
+        pos_y = layer[1]
+        node_in = node.rectangle
+        node_width, node_height = node_in.size
+
+        if pos_x == 1:
+            node_y = int((height-node_height) * 0.5)
+        else:
+            node_y = self.image_height-node_height+int((self.image_height-node_height)*0.5) + int((height-node_height) * 0.5)
+        
+        node_x = int((width-node_width) * 0.5)
+
+        self.image.paste(node_in, (node_x,node_y))   
 
     def connect(self, start, end):
         ax = plt.axes()
@@ -40,16 +51,11 @@ class Network():
         self.image.show()
 
 
-'''
-Network = Image.new("RGB", (1000, 200), color="white")
-net = node(node_name="layer1", input_nodes="10", output_nodes="10")
-draw = ImageDraw.Draw(Network)
-Network.show()
+network = Network()
+network.add_node(layer=(1,1), node=node(node_name="layer1", input_nodes="10", output_nodes="10"))
+network.add_layer()
+network.add_node(layer=(2,1), node=node(node_name="layer1", input_nodes="10", output_nodes="10"))
+network.add_layer()
+network.add_node(layer=(2,1), node=node(node_name="layer1", input_nodes="10", output_nodes="10"))
 
-'''
-im1 = Network()
-#im3 = Image.open('basic_shape.png')
-im2 = node(node_name="layer1", input_nodes="10", output_nodes="10")
-#im2.rectangle.show()
-im1.image.paste(im2.rectangle, (0,0))
-im1.image.show()
+network.visualize()
