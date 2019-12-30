@@ -73,3 +73,6 @@ class node():
         # save as png
         self.rectangle.save("Images/basic_shape.png")
 
+    def get_size(self):
+        width, height =  self.rectangle.size
+        return width, height
