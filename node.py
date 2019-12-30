@@ -30,7 +30,7 @@ class node():
         # border to rectangle
         self.border = 10
 
-    def set_font(self, font_size=10, font_family="Courier_Prime.ttf"):
+    def set_font(self, font_size=10, font_family="Font/Courier_Prime.ttf"):
         # FONT
         self.font_family = font_family
         self.font_size = font_size
@@ -71,4 +71,4 @@ class node():
 
     def save(self):
         # save as png
-        self.rectangle.save("basic_shape.png")
+        self.rectangle.save("Images/basic_shape.png")
