@@ -10,9 +10,9 @@ class node():
         self.add_block()
         self.add_text(block_name=node_name ,input_shape=input_nodes, output_shape=output_nodes)
     
-    def initialize(self, x=300, y=80):
+    def initialize(self, x=200, y=60):
         # IMAGE SIZE
-        self.rectangle = Image.new("RGB", (300, 80), color="white")
+        self.rectangle = Image.new("RGB", (240, 60), color="white")
         self.draw = ImageDraw.Draw(self.rectangle)
         self.width, self.height = self.rectangle.size
 
@@ -28,9 +28,9 @@ class node():
         self.height_full = self.height
 
         # border to rectangle
-        self.border = 12
+        self.border = 10
 
-    def set_font(self, font_size=14, font_family="Courier_Prime.ttf"):
+    def set_font(self, font_size=10, font_family="Courier_Prime.ttf"):
         # FONT
         self.font_family = font_family
         self.font_size = font_size
@@ -72,6 +72,3 @@ class node():
     def save(self):
         # save as png
         self.rectangle.save("basic_shape.png")
-
-#net = node(node_name="layer1", input_nodes="10", output_nodes="10")
-#net.visualize()
