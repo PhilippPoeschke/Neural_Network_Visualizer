@@ -72,3 +72,4 @@ class node():
     def save(self):
         # save as png
         self.rectangle.save("Images/basic_shape.png")
+
