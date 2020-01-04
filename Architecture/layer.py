@@ -131,6 +131,6 @@ class layer():
         # save as png
         self.image.save("Images/Neural_Network_Architecture.png")
 
-neuralnet = layer()
-neuralnet.model([1,5,8,4,6,2,5,4,6,2,7,4,2,8])
-neuralnet.visualize()
+# neuralnet = layer()
+# neuralnet.model([1,5,8,4,6,2,5,4,6,2,7,4,2,8])
+# neuralnet.visualize()
