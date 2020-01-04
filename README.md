@@ -12,6 +12,6 @@ neuralnet.visualize()
 ```
 
 The result looks like:
-![alt text][https://github.com/PhilippPoeschke/Neural_Network_Visualizer/blob/master/Images/Neural_Network_Architecture.png "Neural Network Architecture"]
+![alt text](https://github.com/PhilippPoeschke/Neural_Network_Visualizer/blob/master/Images/Neural_Network_Architecture.png "Neural Network Architecture")
 
 Part 2: Following ...
