@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 from neuron import neuron
 
 class layer():
@@ -9,10 +9,21 @@ class layer():
         # initially creating the network grid layer
         self.image = Image.new("RGB", (100, 500), color="white")
         self.image_width, self.image_height = self.image.size
+        self.border = 25
+        self.set_font()
 
         # defining global variables for the add_node_.. function
         self.layer_x_counter = 1
         self.layer_y_counter = 0
+
+    def set_font(self, font_size=18, font_family="Font/Courier_Prime.ttf"):
+        # FONT
+        self.font_family = font_family
+        self.font_size = font_size
+        self.font = ImageFont.truetype(self.font_family, self.font_size)
+
+        # text parts
+        self.text_size_half = self.font_size*0.5
 
     def add_layer(self):
         # adds a layer in the y achsis
@@ -61,6 +72,8 @@ class layer():
         for layer_number, number_of_nodes in enumerate(list):
             layer_number = layer_number + 1
             self.add_neurons(layer=layer_number, count=number_of_nodes)
+        
+        self.connect()
 
     def connect(self):
         self.draw = ImageDraw.Draw(self.image)
@@ -82,24 +95,42 @@ class layer():
             # calculating the y coordinates
             # of the left neurons
             parts_left_layer = height/(neurons_layer_left+1) 
-            left_neurons_y_coordinate = parts_left_layer + border
+            left_neurons_y_coordinate = border
             # calculating the y coordinates
             # of the right neurons
             parts_right_layer = height/(neurons_layer_right+1) 
-            right_neurons_y_coordinate = parts_right_layer + border
+            right_neurons_y_coordinate = border
 
-            for count in range(neurons_layer_left):
-                print(left_neurons_y_coordinate)
+            # looping over all left neurons
+            for count_left in range(neurons_layer_left):
+                left_neurons_y_coordinate = left_neurons_y_coordinate + parts_left_layer 
 
-            self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
+                right_neurons_y_coordinate = border
+                for count_right in range(neurons_layer_right):
+                    right_neurons_y_coordinate = right_neurons_y_coordinate + parts_right_layer
 
-    def visualize(self):
+                    self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
+
+    def headline(self, width, height, name):
+        # calculating & subtracting the half of the text
+        # of the width parameter to center the headline
+        text_offset = int(self.font.getsize(name)[0] * 0.5)
+        headline = self.draw.text((width-text_offset, height), name, font=self.font, fill="black")
+    
+    def visualize(self, name="Neural Network Architecture"):
+        # place some headline on top of the image
+        w, h = self.image.size
+        width = int(w*0.5)
+        height = self.border
+        self.headline(width=width, height=height, name=name)
+        # show the results
         self.image.show()
-
-
-
+        self.save()
+    
+    def save(self):
+        # save as png
+        self.image.save("Images/Neural_Network_Architecture.png")
 
 neuralnet = layer()
-neuralnet.model([1,5,8,4,6,2])
-neuralnet.connect()
+neuralnet.model([1,5,8,4,6,2,5,4,6,2,7,4,2,8])
 neuralnet.visualize()
