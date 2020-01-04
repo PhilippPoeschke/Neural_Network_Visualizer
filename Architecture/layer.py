@@ -65,23 +65,33 @@ class layer():
     def connect(self):
         self.draw = ImageDraw.Draw(self.image)
         border = 25
+        height = self.image_height - (2 * border)
         neuron_size = neuron()
         xn, yn = neuron_size.get_neuron_coordinates()
 
         for layer , neurons_layer_left in enumerate(self.list[:-1]):
+            # calculating the x coordinates
+            # of the left and the right layer
             layer_left = layer+1
             layer_right = layer+2
             neurons_layer_right = self.list[layer+1:][0]
             left_x_coordinate = int(int(self.image_width*0.5) + 0.5*xn-1 + (layer_left-1) * int(self.image_width))
             right_x_coordinate = int(int(self.image_width*0.5) - 0.5*xn+2 + (layer_right-1) * int(self.image_width))
-            for count_left in range(neurons_layer_left):
-                for count_right in range(neurons_layer_right[0]):
-                    # Let the count start at one
-                    print(count_left+1, count_right+1)
-                    #neurons_y_coordinate = int(border + number * parts) - yn
-                    #print(left_x_coordinate, right_x_coordinate)
-                    yn= 250
-                    self.draw.line((left_x_coordinate, yn, right_x_coordinate, yn), fill=128, width=2)
+            # print("layer_left: ",layer_left, neurons_layer_left,"layer_right: ",layer_right, neurons_layer_right)
+                        
+            # calculating the y coordinates
+            # of the left neurons
+            parts_left_layer = height/(neurons_layer_left+1) 
+            left_neurons_y_coordinate = parts_left_layer + border
+            # calculating the y coordinates
+            # of the right neurons
+            parts_right_layer = height/(neurons_layer_right+1) 
+            right_neurons_y_coordinate = parts_right_layer + border
+
+            for count in range(neurons_layer_left):
+                print(left_neurons_y_coordinate)
+
+            self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
 
     def visualize(self):
         self.image.show()
