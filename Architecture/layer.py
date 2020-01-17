@@ -11,6 +11,7 @@ class layer():
         self.image_width, self.image_height = self.image.size
         self.border = 25
         self.set_font()
+        self.bias = False
 
         # defining global variables for the add_node_.. function
         self.layer_x_counter = 1
@@ -48,8 +49,7 @@ class layer():
 
     def add_neurons(self, layer, count, neuron=neuron()):
         # Defining local variables for calculation
-        if count > 1:
-            self.add_layer_x()
+        self.add_layer_x()
         border = 25
         height = self.image_height - (2 * border)
         width = self.image_width
@@ -67,8 +67,16 @@ class layer():
             neurons_y_coordinate = int(border + number * parts) - yn
             self.add_neuron(x=neurons_x_coordinate, y=neurons_y_coordinate)
         
-    def model(self, list=[1,1]):
-        self.list = list
+    def model(self, list=[1,1], bias=False):
+        self.bias = bias
+        if self.bias == True:
+            end = len(list)
+            list[1:end-1] = [x+1 for x in list[1:end-1]]
+            self.list = list
+            print(self.list)
+        if self.bias == False:
+            self.list = list
+            
         for layer_number, number_of_nodes in enumerate(list):
             layer_number = layer_number + 1
             self.add_neurons(layer=layer_number, count=number_of_nodes)
@@ -76,6 +84,7 @@ class layer():
         self.connect()
 
     def connect(self):
+        count = 0
         self.draw = ImageDraw.Draw(self.image)
         border = 25
         height = self.image_height - (2 * border)
@@ -91,7 +100,7 @@ class layer():
             left_x_coordinate = int(int(self.image_width*0.5) + 0.5*xn-1 + (layer_left-1) * int(self.image_width))
             right_x_coordinate = int(int(self.image_width*0.5) - 0.5*xn+2 + (layer_right-1) * int(self.image_width))
             # print("layer_left: ",layer_left, neurons_layer_left,"layer_right: ",layer_right, neurons_layer_right)
-                        
+          
             # calculating the y coordinates
             # of the left neurons
             parts_left_layer = height/(neurons_layer_left+1) 
@@ -104,12 +113,21 @@ class layer():
             # looping over all left neurons
             for count_left in range(neurons_layer_left):
                 left_neurons_y_coordinate = left_neurons_y_coordinate + parts_left_layer 
-
                 right_neurons_y_coordinate = border
-                for count_right in range(neurons_layer_right):
-                    right_neurons_y_coordinate = right_neurons_y_coordinate + parts_right_layer
+                
+                if self.bias == True:
+                    if layer_left == (len(self.list)-1) and layer_right == (len(self.list)) and count == 0:
+                        count += 1
+                        neurons_layer_right += 1
+                        
+                    for count_right in range(neurons_layer_right-1):
+                        right_neurons_y_coordinate = right_neurons_y_coordinate + parts_right_layer
+                        self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
 
-                    self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
+                if self.bias == False:
+                    for count_right in range(neurons_layer_right):
+                        right_neurons_y_coordinate = right_neurons_y_coordinate + parts_right_layer
+                        self.draw.line((left_x_coordinate, left_neurons_y_coordinate, right_x_coordinate, right_neurons_y_coordinate), fill=128, width=2)
 
     def headline(self, width, height, name):
         # calculating & subtracting the half of the text
@@ -131,6 +149,6 @@ class layer():
         # save as png
         self.image.save("Images/Neural_Network_Architecture.png")
 
-# neuralnet = layer()
-# neuralnet.model([1,5,8,4,6,2,5,4,6,2,7,4,2,8])
-# neuralnet.visualize()
+neuralnet = layer()
+neuralnet.model([1,4,8,8,1,4,8,2,2,1], bias=False)
+neuralnet.visualize()
