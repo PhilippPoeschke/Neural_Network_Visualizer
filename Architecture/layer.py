@@ -7,7 +7,7 @@ class layer():
 
     def __init__(self):
         # initially creating the network grid layer
-        self.image = Image.new("RGB", (100, 500), color="white")
+        self.image = Image.new("RGB", (100, 800), color="white")
         self.image_width, self.image_height = self.image.size
         self.border = 25
         self.set_font()
@@ -49,7 +49,8 @@ class layer():
 
     def add_neurons(self, layer, count, neuron=neuron()):
         # Defining local variables for calculation
-        self.add_layer_x()
+        if layer < len(self.list):
+            self.add_layer_x()
         border = 25
         height = self.image_height - (2 * border)
         width = self.image_width
@@ -175,6 +176,6 @@ class layer():
         self.image.save("Images/Neural_Network_Architecture.png")
 
 neuralnet = layer()
-neuralnet.model([2,4,4,2], bias=False)
+neuralnet.model([6,8,8,6], bias=False)
 neuralnet.visualize()
 neuralnet.save()
