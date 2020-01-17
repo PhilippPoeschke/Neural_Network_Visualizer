@@ -134,6 +134,30 @@ class layer():
         # of the width parameter to center the headline
         text_offset = int(self.font.getsize(name)[0] * 0.5)
         headline = self.draw.text((width-text_offset, height), name, font=self.font, fill="black")
+        
+    def show_layer_size(self, height):
+        self.set_font(font_size=12)
+        neuron_size = neuron()
+        xn, _ = neuron_size.get_neuron_coordinates()
+        height = height+30
+        for layer , neurons_layer_left in enumerate(self.list):
+            if layer == 0:
+                name = "Input"
+                name_second = "Layer"
+            if layer > 0 and layer < len(self.list)-1:
+                name = "Hidden" # + str(neurons_layer_left)
+                name_second = "Layer " + str(layer)
+            if layer == len(self.list)-1:
+                name = "Output"
+                name_second = "Layer"
+            layer_left = layer + 1
+            width = int(int(self.image_width * 0.5) + 0.5 * xn - 1 + (layer_left-1) * int(self.image_width) - 0.5 * xn) 
+            #name = name.center(50)
+            text_offset = int(self.font.getsize(name)[0] * 0.5)
+            height_second = height + int(self.font.getsize(name)[1] + 10)
+            text_offset_second = int(self.font.getsize(name_second)[0] * 0.5)
+            self.draw.text((width-text_offset, height), name, font=self.font, fill="black")
+            self.draw.text((width-text_offset_second, height_second), name_second, font=self.font, fill="black")
     
     def visualize(self, name="Neural Network Architecture"):
         # place some headline on top of the image
@@ -141,6 +165,7 @@ class layer():
         width = int(w*0.5)
         height = self.border
         self.headline(width=width, height=height, name=name)
+        self.show_layer_size(height=height)
         # show the results
         self.image.show()
         self.save()
@@ -150,5 +175,6 @@ class layer():
         self.image.save("Images/Neural_Network_Architecture.png")
 
 neuralnet = layer()
-neuralnet.model([1,4,8,8,1,4,8,2,2,1], bias=False)
+neuralnet.model([2,4,4,2], bias=False)
 neuralnet.visualize()
+neuralnet.save()
