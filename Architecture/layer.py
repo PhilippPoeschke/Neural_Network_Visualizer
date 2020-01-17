@@ -7,11 +7,12 @@ class layer():
 
     def __init__(self):
         # initially creating the network grid layer
-        self.image = Image.new("RGB", (100, 800), color="white")
+        self.image = Image.new("RGB", (100, 600), color="white")
         self.image_width, self.image_height = self.image.size
         self.border = 25
         self.set_font()
         self.bias = False
+        self.neuron_count = 6
 
         # defining global variables for the add_node_.. function
         self.layer_x_counter = 1
@@ -69,6 +70,10 @@ class layer():
             self.add_neuron(x=neurons_x_coordinate, y=neurons_y_coordinate)
         
     def model(self, list=[1,1], bias=False):
+        highest = max(list)
+        if self.neuron_count < highest:
+            diff = highest - self.neuron_count
+            self.image_height = self.image_height + 100 * diff
         self.bias = bias
         if self.bias == True:
             end = len(list)
@@ -136,8 +141,8 @@ class layer():
         text_offset = int(self.font.getsize(name)[0] * 0.5)
         headline = self.draw.text((width-text_offset, height), name, font=self.font, fill="black")
         
-    def show_layer_size(self, height):
-        self.set_font(font_size=12)
+    def show_layer_name(self, height):
+        self.set_font(font_size=13)
         neuron_size = neuron()
         xn, _ = neuron_size.get_neuron_coordinates()
         height = height+30
@@ -160,13 +165,14 @@ class layer():
             self.draw.text((width-text_offset, height), name, font=self.font, fill="black")
             self.draw.text((width-text_offset_second, height_second), name_second, font=self.font, fill="black")
     
-    def visualize(self, name="Neural Network Architecture"):
+    def visualize(self, name="Neural Network Architecture", layer_name=True):
         # place some headline on top of the image
         w, h = self.image.size
         width = int(w*0.5)
         height = self.border
         self.headline(width=width, height=height, name=name)
-        self.show_layer_size(height=height)
+        if layer_name == True:
+            self.show_layer_name(height=height)
         # show the results
         self.image.show()
         self.save()
@@ -176,6 +182,6 @@ class layer():
         self.image.save("Images/Neural_Network_Architecture.png")
 
 neuralnet = layer()
-neuralnet.model([6,8,8,6], bias=False)
-neuralnet.visualize()
+neuralnet.model([6,4,10,6,5,4,8,5,3,7], bias=True)
+neuralnet.visualize(layer_name=True)
 neuralnet.save()
